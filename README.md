@@ -93,6 +93,8 @@ dapr run --app-id checkout --components-path ../../../components/ -- dotnet run 
 dapr stop --app-id order-processor
 ```
 
+### Deploy apps to Azure (Azure Container Apps, Azure Service Bus)
+
 5. Deploy to Azure for dev-test
 
 NOTE: make sure you have Azure Dev CLI pre-reqs [here](https://github.com/Azure-Samples/todo-python-mongo-aca)
