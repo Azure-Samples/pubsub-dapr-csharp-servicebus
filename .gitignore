@@ -1,0 +1,42 @@
+# General
+.env
+*.suo
+*.user
+_ReSharper.*
+bin
+obj
+github.com
+
+## Build generated
+target/
+node_modules
+release.properties
+.mvn
+mvnw
+packages
+**/__pycache__/
+
+# IDE generated files and directories
+*.iml
+.idea/
+*.ipr
+*.iws
+.vs/
+.vscode/
+.code-workspace
+.settings/
+.metadata
+.project
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+*.package-lock.json
+
+# macOS
+.DS_Store
