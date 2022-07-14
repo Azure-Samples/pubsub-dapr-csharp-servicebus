@@ -16,6 +16,16 @@ And one subscriber:
  
 - Dotnet subscriber `order-processor`
 
+### Pre-requisites
+
+For this example, you will need:
+
+- [Dapr CLI](https://docs.dapr.io/getting-started)
+- [Python 3.7+](https://www.python.org/downloads/)
+<!-- IGNORE_LINKS -->
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+<!-- END_IGNORE -->
+
 ### Run Dotnet message subscriber with Dapr
 
 1. Navigate to the directory and install dependencies: 
