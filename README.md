@@ -21,7 +21,7 @@ And one subscriber:
 For this example, you will need:
 
 - [Dapr CLI](https://docs.dapr.io/getting-started)
-- [Python 3.7+](https://www.python.org/downloads/)
+- [.NET 6 SDK](https://dotnet.microsoft.com/download)
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
