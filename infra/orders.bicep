@@ -85,6 +85,29 @@ resource orders 'Microsoft.App/containerApps@2022-03-01' = {
           ]
         }
       ]
+      scale: {
+        minReplicas: 0
+        maxReplicas: 10
+        rules: [
+          {
+            name: 'topic-based-scaling'
+            custom: {
+              type: 'azure-servicebus'
+              metadata: {
+                topicName: 'orders'
+                subscriptionName: 'orders'
+                messageCount: '30'
+              }
+              auth: [
+                {
+                  secretRef: 'sb-root-connectionstring'
+                  triggerParameter: 'connection'
+                }
+              ]
+            }
+          }
+        ]
+      }
     }
   }
 }
