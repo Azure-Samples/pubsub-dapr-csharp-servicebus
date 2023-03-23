@@ -30,6 +30,10 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = {
   name: 'keyvault${resourceToken}'
 }
 
+resource sb 'Microsoft.ServiceBus/namespaces@2021-11-01' existing = {
+  name: 'sb-${resourceToken}'
+}
+
 resource orders 'Microsoft.App/containerApps@2022-03-01' = {
   name: 'ca-orders-${resourceToken}'
   location: location
@@ -59,6 +63,10 @@ resource orders 'Microsoft.App/containerApps@2022-03-01' = {
           name: 'registry-password'
           value: containerRegistry.listCredentials().passwords[0].value
         }
+        {
+          name: 'sb-root-connectionstring'
+          value: '${listKeys('${sb.id}/AuthorizationRules/RootManageSharedAccessKey', sb.apiVersion).primaryConnectionString};EntityPath=orders'
+        }
       ]
       registries: [
         {
@@ -85,6 +93,29 @@ resource orders 'Microsoft.App/containerApps@2022-03-01' = {
           ]
         }
       ]
+      scale: {
+        minReplicas: 0
+        maxReplicas: 10
+        rules: [
+          {
+            name: 'topic-based-scaling'
+            custom: {
+              type: 'azure-servicebus'
+              metadata: {
+                topicName: 'orders'
+                subscriptionName: 'orders'
+                messageCount: '30'
+              }
+              auth: [
+                {
+                  secretRef: 'sb-root-connectionstring'
+                  triggerParameter: 'connection'
+                }
+              ]
+            }
+          }
+        ]
+      }
     }
   }
 }

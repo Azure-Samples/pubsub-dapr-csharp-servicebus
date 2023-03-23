@@ -1,4 +1,6 @@
-# Dapr pub/sub
+# Microservice communication using pubsub (async)
+
+![](images/pubsub-diagram.png)
 
 In this quickstart, you'll create a publisher microservice and a subscriber microservice to demonstrate how Dapr enables a publish-subcribe pattern. The publisher will generate messages of a specific topic, while subscribers will listen for messages of specific topics. See [Why Pub-Sub](#why-pub-sub) to understand when this pattern might be a good choice for your software architecture.
 
