@@ -111,8 +111,7 @@ dapr stop --app-id order-processor
 
 NOTE: make sure you have Azure Dev CLI pre-reqs [here](https://github.com/Azure-Samples/todo-python-mongo-aca)
 
-5. Open a terminal, create a new empty folder, and change into it.
-6. Run the following command to initialize the project. 
+5. Run the following command to initialize the project. 
 
 ```bash
 azd init --template https://github.com/Azure-Samples/pubsub-dapr-csharp-servicebus
@@ -122,7 +121,7 @@ This command will clone the code to your current folder and prompt you for the f
 
 - `Environment Name`: This will be used as a prefix for the resource group that will be created to hold all Azure resources. This name should be unique within your Azure subscription.
 
-7. Run the following command to build a deployable copy of your application, provision the template's infrastructure to Azure and also deploy the applciation code to those newly provisioned resources.
+6. Run the following command to build a deployable copy of your application, provision the template's infrastructure to Azure and also deploy the applciation code to those newly provisioned resources.
 
 ```bash
 azd up
