@@ -112,5 +112,9 @@ dapr stop --app-id order-processor
 NOTE: make sure you have Azure Dev CLI pre-reqs [here](https://github.com/Azure-Samples/todo-python-mongo-aca)
 
 ```bash
+azd init
+```
+
+```bash
 azd up
 ```
