@@ -4,12 +4,15 @@ name: pubsub-dapr-csharp-servicebus
 metadata:
   template: pubsub-dapr-csharp-servicebus@0.0.1-beta
 services:
+  orders:
+    project: order-processor
+    language: csharp
+    host: containerapp
+    module: app/orders
   checkout:
     project: checkout
     dist: build
     language: csharp
     host: containerapp
-  orders:
-    project: order-processor
-    language: csharp
-    host: containerapp
+    module: app/checkout
+  
