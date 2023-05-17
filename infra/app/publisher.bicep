@@ -8,7 +8,7 @@ param name string = ''
 param serviceName string = 'checkout'
 param managedIdentityName string = ''
 
-module checkout '../core/host/container-app.bicep' = {
+module publisher '../core/host/container-app.bicep' = {
   name: '${serviceName}-container-app-module'
   params: {
     name: name
@@ -22,11 +22,11 @@ module checkout '../core/host/container-app.bicep' = {
     daprEnabled: true
     containerName: serviceName
     ingressEnabled: false
-    managedIdentityEnabled: true
-    managedIdentityName: managedIdentityName
+    identityType: 'UserAssigned'
+    identityName: managedIdentityName
   }
 }
 
 
-output SERVICE_CHECKOUT_IMAGE_NAME string = checkout.outputs.imageName
-output SERVICE_CHECKOUT_NAME string = checkout.outputs.name
+output SERVICE_PUBLISHER_IMAGE_NAME string = publisher.outputs.imageName
+output SERVICE_PUBLISHER_NAME string = publisher.outputs.name

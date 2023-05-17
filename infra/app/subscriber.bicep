@@ -8,7 +8,7 @@ param name string = ''
 param serviceName string = 'orders'
 param managedIdentityName string = ''
 
-module orders '../core/host/container-app.bicep' = {
+module subscriber '../core/host/container-app.bicep' = {
   name: '${serviceName}-container-app-module'
   params: {
     name: name
@@ -22,12 +22,12 @@ module orders '../core/host/container-app.bicep' = {
     daprEnabled: true
     containerName: serviceName
     targetPort: 7001
-    managedIdentityEnabled: true
-    managedIdentityName: managedIdentityName
+    identityType: 'UserAssigned'
+    identityName: managedIdentityName
   }
 }
 
 
-output ORDERS_URI string = orders.outputs.uri
-output SERVICE_ORDERS_IMAGE_NAME string = orders.outputs.imageName
-output SERVICE_ORDERS_NAME string = orders.outputs.name
+output SUBSCRIBER_URI string = subscriber.outputs.uri
+output SERVICE_SUBSCRIBER_IMAGE_NAME string = subscriber.outputs.imageName
+output SERVICE_SUBSCRIBER_NAME string = subscriber.outputs.name

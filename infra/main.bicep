@@ -10,12 +10,15 @@ param environmentName string
 param location string
 
 // App based params
-param checkoutContainerAppName string = ''
-param checkoutServiceName string = 'checkout'
-param ordersContainerAppName string = ''
-param ordersServiceName string = 'orders'
-param checkoutImageName string = ''
-param ordersImageName string = ''
+// Publisher
+param publisherContainerAppName string = ''
+param publisherServiceName string = 'checkout'
+param publisherImageName string = ''
+
+//Subsciber
+param subscriberContainerAppName string = ''
+param subscriberServiceName string = 'orders'
+param subscriberImageName string = ''
 
 param applicationInsightsDashboardName string = ''
 param applicationInsightsName string = ''
@@ -67,7 +70,7 @@ module serviceBusResources './app/servicebus.bicep' = {
   }
 }
 
-module serviceBusAccess './app/servicebus-access.bicep' = {
+module serviceBusAccess './app/access.bicep' = {
   name: 'sb-access'
   scope: rg
   params: {
@@ -90,45 +93,47 @@ module appEnv './app/app-env.bicep' = {
     serviceBusName: serviceBusResources.outputs.serviceBusName
     applicationInsightsName: monitoring.outputs.applicationInsightsName
     daprEnabled: true
-    manegeIdentityClientId: serviceBusAccess.outputs.managedIdentityClientlId
+    manegedIdentityClientId: serviceBusAccess.outputs.managedIdentityClientlId
   }
 }
 
-module checkoutApp './app/checkout.bicep' = {
+module publisherApp './app/publisher.bicep' = {
   name: 'api-resources'
   scope: rg
   params: {
-    name: !empty(checkoutContainerAppName) ? checkoutContainerAppName : '${abbrs.appContainerApps}${checkoutServiceName}-${resourceToken}'
-    serviceName: checkoutServiceName
+    name: !empty(publisherContainerAppName) ? publisherContainerAppName : '${abbrs.appContainerApps}${publisherServiceName}-${resourceToken}'
+    serviceName: publisherServiceName
     containerRegistryName: appEnv.outputs.registryName
-    imageName: checkoutImageName
+    imageName: publisherImageName
     location: location
     containerAppsEnvironmentName: appEnv.outputs.environmentName
     managedIdentityName: serviceBusAccess.outputs.managedIdentityName
   }
   dependsOn: [
-    ordersApp  // Deploy the subscriber first and then deploy the publisher
+    subscriberApp  // Deploy the subscriber first and then deploy the publisher
   ]
 }
 
-module ordersApp './app/orders.bicep' = {
+module subscriberApp './app/subscriber.bicep' = {
   name: 'web-resources'
   scope: rg
   params: {
-    name: !empty(ordersContainerAppName) ? ordersContainerAppName : '${abbrs.appContainerApps}${ordersServiceName}-${resourceToken}'
+    name: !empty(subscriberContainerAppName) ? subscriberContainerAppName : '${abbrs.appContainerApps}${subscriberServiceName}-${resourceToken}'
     location: location
-    imageName: ordersImageName
+    imageName: subscriberImageName
     containerRegistryName: appEnv.outputs.registryName
     containerAppsEnvironmentName: appEnv.outputs.environmentName
-    serviceName: ordersServiceName
+    serviceName: subscriberServiceName
     managedIdentityName: serviceBusAccess.outputs.managedIdentityName
   }
 }
 
 
-output SERVICE_CHECKOUT_NAME string = checkoutApp.outputs.SERVICE_CHECKOUT_NAME
-output SERVICE_ORDERS_NAME string = ordersApp.outputs.SERVICE_ORDERS_NAME
-output ORDERS_APP_URI string = ordersApp.outputs.ORDERS_URI
+output SERVICE_PUBLISHER_NAME string = publisherApp.outputs.SERVICE_PUBLISHER_NAME
+output SERVICE_PUBLISHER_IMAGE_NAME string = publisherApp.outputs.SERVICE_PUBLISHER_IMAGE_NAME
+output SERVICE_SUBSCRIBER_NAME string = subscriberApp.outputs.SERVICE_SUBSCRIBER_NAME
+output SERVICE_SUBSCRIBER_IMAGE_NAME string = subscriberApp.outputs.SERVICE_SUBSCRIBER_IMAGE_NAME
+output SUBSCRIBER_APP_URI string = subscriberApp.outputs.SUBSCRIBER_URI
 output SERVICEBUS_ENDPOINT string = serviceBusResources.outputs.SERVICEBUS_ENDPOINT
 output SERVICEBUS_NAME string = serviceBusResources.outputs.serviceBusName
 output APPINSIGHTS_INSTRUMENTATIONKEY string = monitoring.outputs.applicationInsightsInstrumentationKey

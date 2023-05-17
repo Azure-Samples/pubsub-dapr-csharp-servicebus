@@ -8,11 +8,10 @@ services:
     project: order-processor
     language: csharp
     host: containerapp
-    module: app/orders
+    module: app/publisher
   checkout:
     project: checkout
     dist: build
     language: csharp
     host: containerapp
-    module: app/checkout
-  
+    module: app/subscriber

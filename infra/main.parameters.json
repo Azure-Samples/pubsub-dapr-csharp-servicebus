@@ -8,11 +8,11 @@
     "location": {
       "value": "${AZURE_LOCATION}"
     },
-    "checkoutImageName": {
-      "value": "${SERVICE_CHECKOUT_IMAGE_NAME}"
+    "publisherImageName": {
+      "value": "${SERVICE_PUBLISHER_IMAGE_NAME}"
     },
-    "ordersImageName": {
-      "value": "${SERVICE_ORDERS_IMAGE_NAME}"
+    "subscriberImageName": {
+      "value": "${SERVICE_SUBSCRIBER_IMAGE_NAME}"
     }
   }
 }

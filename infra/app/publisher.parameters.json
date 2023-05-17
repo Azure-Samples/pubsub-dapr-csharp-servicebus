@@ -3,13 +3,13 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "${SERVICE_ORDERS_NAME}"
+      "value": "${SERVICE_PUBLISHER_NAME}"
     },
     "location": {
       "value": "${AZURE_LOCATION}"
     },
     "imageName": {
-      "value": "${SERVICE_ORDERS_IMAGE_NAME}"
+      "value": "${SERVICE_PUBLISHER_IMAGE_NAME}"
     },
     "containerAppsEnvironmentName": {
       "value": "${AZURE_CONTAINER_ENVIRONMENT_NAME}"

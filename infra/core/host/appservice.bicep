@@ -32,6 +32,8 @@ param minimumElasticInstanceCount int = -1
 param numberOfWorkers int = -1
 param scmDoBuildDuringDeployment bool = false
 param use32BitWorkerProcess bool = false
+param ftpsState string = 'FtpsOnly'
+param healthCheckPath string = ''
 
 resource appService 'Microsoft.Web/sites@2022-03-01' = {
   name: name
@@ -43,12 +45,14 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
     siteConfig: {
       linuxFxVersion: linuxFxVersion
       alwaysOn: alwaysOn
-      ftpsState: 'FtpsOnly'
+      ftpsState: ftpsState
+      minTlsVersion: '1.2'
       appCommandLine: appCommandLine
       numberOfWorkers: numberOfWorkers != -1 ? numberOfWorkers : null
       minimumElasticInstanceCount: minimumElasticInstanceCount != -1 ? minimumElasticInstanceCount : null
       use32BitWorkerProcess: use32BitWorkerProcess
       functionAppScaleLimit: functionAppScaleLimit != -1 ? functionAppScaleLimit : null
+      healthCheckPath: healthCheckPath
       cors: {
         allowedOrigins: union([ 'https://portal.azure.com', 'https://ms.portal.azure.com' ], allowedOrigins)
       }
@@ -59,17 +63,6 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
 
   identity: { type: managedIdentity ? 'SystemAssigned' : 'None' }
 
-  resource configAppSettings 'config' = {
-    name: 'appsettings'
-    properties: union(appSettings,
-      {
-        SCM_DO_BUILD_DURING_DEPLOYMENT: string(scmDoBuildDuringDeployment)
-        ENABLE_ORYX_BUILD: string(enableOryxBuild)
-      },
-      !empty(applicationInsightsName) ? { APPLICATIONINSIGHTS_CONNECTION_STRING: applicationInsights.properties.ConnectionString } : {},
-      !empty(keyVaultName) ? { AZURE_KEY_VAULT_ENDPOINT: keyVault.properties.vaultUri } : {})
-  }
-
   resource configLogs 'config' = {
     name: 'logs'
     properties: {
@@ -78,9 +71,36 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
       failedRequestsTracing: { enabled: true }
       httpLogs: { fileSystem: { enabled: true, retentionInDays: 1, retentionInMb: 35 } }
     }
-    dependsOn: [
-      configAppSettings
-    ]
+  }
+
+  resource basicPublishingCredentialsPoliciesFtp 'basicPublishingCredentialsPolicies' = {
+    name: 'ftp'
+    location: location
+    properties: {
+      allow: false
+    }
+  }
+
+  resource basicPublishingCredentialsPoliciesScm 'basicPublishingCredentialsPolicies' = {
+    name: 'scm'
+    location: location
+    properties: {
+      allow: false
+    }
+  }
+}
+
+module config 'appservice-appsettings.bicep' = if (!empty(appSettings)) {
+  name: '${name}-appSettings'
+  params: {
+    name: appService.name
+    appSettings: union(appSettings,
+      {
+        SCM_DO_BUILD_DURING_DEPLOYMENT: string(scmDoBuildDuringDeployment)
+        ENABLE_ORYX_BUILD: string(enableOryxBuild)
+      },
+      !empty(applicationInsightsName) ? { APPLICATIONINSIGHTS_CONNECTION_STRING: applicationInsights.properties.ConnectionString } : {},
+      !empty(keyVaultName) ? { AZURE_KEY_VAULT_ENDPOINT: keyVault.properties.vaultUri } : {})
   }
 }
 
