@@ -19,7 +19,7 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
     properties: {
       supportOrdering: true
     }
-  
+
     resource subscription 'subscriptions' = {
       name: topicName
       properties: {
@@ -32,3 +32,4 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
 }
 
 output SERVICEBUS_ENDPOINT string = serviceBusNamespace.properties.serviceBusEndpoint
+output serviceBusName string = serviceBusNamespace.name
