@@ -13,12 +13,12 @@ param location string
 // Publisher
 param publisherContainerAppName string = ''
 param publisherServiceName string = 'checkout'
-param publisherImageName string = ''
+param publisherAppExists bool = false
 
 //Subsciber
 param subscriberContainerAppName string = ''
 param subscriberServiceName string = 'orders'
-param subscriberImageName string = ''
+param subscriberAppExists bool = false
 
 param applicationInsightsDashboardName string = ''
 param applicationInsightsName string = ''
@@ -93,7 +93,7 @@ module appEnv './app/app-env.bicep' = {
     serviceBusName: serviceBusResources.outputs.serviceBusName
     applicationInsightsName: monitoring.outputs.applicationInsightsName
     daprEnabled: true
-    manegedIdentityClientId: serviceBusAccess.outputs.managedIdentityClientlId
+    managedIdentityClientId: serviceBusAccess.outputs.managedIdentityClientlId
   }
 }
 
@@ -104,10 +104,10 @@ module publisherApp './app/publisher.bicep' = {
     name: !empty(publisherContainerAppName) ? publisherContainerAppName : '${abbrs.appContainerApps}${publisherServiceName}-${resourceToken}'
     serviceName: publisherServiceName
     containerRegistryName: appEnv.outputs.registryName
-    imageName: publisherImageName
     location: location
     containerAppsEnvironmentName: appEnv.outputs.environmentName
     managedIdentityName: serviceBusAccess.outputs.managedIdentityName
+    exists: publisherAppExists
   }
   dependsOn: [
     subscriberApp  // Deploy the subscriber first and then deploy the publisher
@@ -120,11 +120,11 @@ module subscriberApp './app/subscriber.bicep' = {
   params: {
     name: !empty(subscriberContainerAppName) ? subscriberContainerAppName : '${abbrs.appContainerApps}${subscriberServiceName}-${resourceToken}'
     location: location
-    imageName: subscriberImageName
     containerRegistryName: appEnv.outputs.registryName
     containerAppsEnvironmentName: appEnv.outputs.environmentName
     serviceName: subscriberServiceName
     managedIdentityName: serviceBusAccess.outputs.managedIdentityName
+    exists: subscriberAppExists
   }
 }
 

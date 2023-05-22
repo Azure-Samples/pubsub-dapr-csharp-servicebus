@@ -5,7 +5,7 @@ param logAnalyticsWorkspaceName string
 param serviceBusName string
 param applicationInsightsName string = ''
 param daprEnabled bool = false
-param manegedIdentityClientId string
+param managedIdentityClientId string
 
 // Container apps host (including container registry)
 module containerApps '../core/host/container-apps.bicep' = {
@@ -35,7 +35,7 @@ resource daprComponentPubsub 'Microsoft.App/managedEnvironments/daprComponents@2
     metadata: [
       {
         name: 'azureClientId'
-        value: manegedIdentityClientId  // See https://docs.dapr.io/developing-applications/integrations/azure/authenticating-azure/#credentials-metadata-fields for MSI
+        value: managedIdentityClientId  // See https://docs.dapr.io/developing-applications/integrations/azure/authenticating-azure/#credentials-metadata-fields for MSI
       }
       {
         name: 'namespaceName' // See https://docs.dapr.io/reference/components-reference/supported-pubsub/setup-azure-servicebus-topics/#spec-metadata-fields
