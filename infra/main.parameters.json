@@ -13,6 +13,12 @@
     },
     "subscriberImageName": {
       "value": "${SERVICE_SUBSCRIBER_IMAGE_NAME}"
+    },
+    "publisherAppExists": {
+      "value": "${SERVICE_CHECKOUT_RESOURCE_EXISTS}"
+    },
+    "subscriberAppExists": {
+      "value": "${SERVICE_ORDERS_RESOURCE_EXISTS}"
     }
   }
 }
