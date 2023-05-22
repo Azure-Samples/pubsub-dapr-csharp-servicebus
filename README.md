@@ -109,7 +109,7 @@ dapr stop --app-id order-processor
 
 #### Deploy to Azure for dev-test
 
-NOTE: make sure you have Azure Dev CLI pre-reqs [here](https://github.com/Azure-Samples/todo-python-mongo-aca)
+NOTE: make sure you have Azure Dev CLI pre-reqs [here](https://github.com/Azure-Samples/todo-python-mongo-aca) and are on version 0.9.0-beta.3 or greater.
 
 5. Run the following command to initialize the project. 
 
