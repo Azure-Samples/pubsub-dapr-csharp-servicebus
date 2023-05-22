@@ -20,6 +20,7 @@ module publisher '../core/host/container-app-upsert.bicep' = {
     containerCpuCoreCount: '1.0'
     containerMemory: '2.0Gi'
     daprEnabled: true
+    containerName: serviceName
     daprAppId: serviceName
     ingressEnabled: false
     identityType: 'UserAssigned'

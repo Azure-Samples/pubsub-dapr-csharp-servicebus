@@ -20,6 +20,7 @@ module subscriber '../core/host/container-app-upsert.bicep' = {
     exists: exists
     daprEnabled: true
     containerName: serviceName
+    daprAppId: serviceName
     targetPort: 7001
     identityType: 'UserAssigned'
     identityName: managedIdentityName
