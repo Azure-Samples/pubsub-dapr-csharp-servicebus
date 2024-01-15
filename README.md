@@ -1,3 +1,20 @@
+---
+page_type: sample
+languages:
+- azdeveloper
+- csharp
+- bicep
+products:
+- azure
+- azure-container-apps
+- azure-service-bus
+- dapr
+urlFragment: pubsub-dapr-csharp-servicebus
+name: Microservice communication using pubsub (async)
+description: Create a publisher microservice and a subscriber microservice with C# to demonstrate how Dapr enables a publish-subcribe pattern. The publisher will generate messages of a specific topic, while subscribers will listen for messages of specific topics. 
+---
+<!-- YAML front-matter schema: https://review.learn.microsoft.com/en-us/help/contribute/samples/process/onboarding?branch=main#supported-metadata-fields-for-readmemd -->
+
 # Microservice communication using pubsub (async)
 
 ![](images/pubsub-diagram.png)
