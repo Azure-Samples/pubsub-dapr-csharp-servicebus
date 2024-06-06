@@ -5,7 +5,7 @@ param topicName string = 'orders'
 param tags object
 
 
-resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
+resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' = {
   name: 'sb-${resourceToken}'
   location: location
   tags: tags
@@ -13,7 +13,9 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
     name: skuName
     tier: skuName
   }
-
+  properties: {
+    minimumTlsVersion: '1.2'
+  }
   resource topic 'topics' = {
     name: topicName
     properties: {
