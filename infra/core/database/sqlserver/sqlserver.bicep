@@ -41,6 +41,19 @@ resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
       endIpAddress: '255.255.255.254'
     }
   }
+
+  resource advanceThreadProtection 'advancedThreatProtectionSettings' = {
+    name: 'advancedThreatProtection'
+    properties: {
+      state: 'Enabled'
+    }
+  }
+
+  resource Auditing 'auditingSettings' = {
+    name: 'auditing'
+    properties: {
+      state: 'Enabled'    
+  }
 }
 
 resource sqlDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
