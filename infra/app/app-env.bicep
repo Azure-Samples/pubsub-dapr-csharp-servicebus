@@ -6,6 +6,8 @@ param serviceBusName string
 param applicationInsightsName string = ''
 param daprEnabled bool = false
 param managedIdentityClientId string
+param vnetInernal bool
+param vnetName string
 
 // Container apps host (including container registry)
 module containerApps '../core/host/container-apps.bicep' = {
@@ -18,6 +20,8 @@ module containerApps '../core/host/container-apps.bicep' = {
     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
     applicationInsightsName: applicationInsightsName
     daprEnabled: daprEnabled
+    vnetName: vnetName
+    vnetInternal: vnetInernal
   }
 }
 
