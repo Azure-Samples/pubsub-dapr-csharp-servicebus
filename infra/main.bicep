@@ -29,6 +29,9 @@ param containerAppsEnvironmentName string = ''
 param containerRegistryName string = ''
 
 param resourceGroupName string = ''
+param vnetName string = 'vnet-ca'
+param vnetInternal bool = true
+param vnetPrefix string = '10.0.0.0/16'
 // Optional parameters to override the default azd resource naming conventions. Update the main.parameters.json file to provide values. e.g.,:
 // "resourceGroupName": {
 //      "value": "myGroupName"
@@ -94,6 +97,31 @@ module appEnv './app/app-env.bicep' = {
     applicationInsightsName: monitoring.outputs.applicationInsightsName
     daprEnabled: true
     managedIdentityClientId: serviceBusAccess.outputs.managedIdentityClientlId
+    vnetName: vnet.outputs.vnetName
+    vnetInernal: vnetInternal 
+  }
+}
+
+var containerAppsSubnet = {
+  name: 'ContainerAppsSubnet'
+  properties: {
+    addressPrefix: '10.0.0.0/23'
+  }
+}
+
+var subnets = [
+  containerAppsSubnet
+]
+
+// Deploy an Azure Virtual Network 
+module vnet 'core/networking/vnet.bicep' = {
+  name: '${deployment().name}--vnet'
+  scope: rg
+  params: {
+    location: location
+    vnetName: vnetName
+    vnetPrefix: vnetPrefix
+    subnets: subnets
   }
 }
 
